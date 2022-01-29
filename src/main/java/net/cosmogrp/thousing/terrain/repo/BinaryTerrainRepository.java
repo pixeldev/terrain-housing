@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +54,11 @@ public class BinaryTerrainRepository implements TerrainRepository {
     @Override
     public @Nullable Terrain getTerrain(String id) {
         return terrainsById.get(id);
+    }
+
+    @Override
+    public Collection<Terrain> getTerrains() {
+        return terrainsById.values();
     }
 
     @Override
