@@ -10,11 +10,10 @@ import org.jetbrains.annotations.Nullable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.UUID;
 
 public class Terrain implements Codec {
 
-    private UUID id;
+    private String id;
 
     private BlockAxis skullLocation;
     private BlockAxis originLocation;
@@ -23,8 +22,8 @@ public class Terrain implements Codec {
     private Cuboid cuboid;
     private boolean enabled;
 
-    private Terrain(BlockAxis originLocation) {
-        this.id = UUID.randomUUID();
+    private Terrain(String id, BlockAxis originLocation) {
+        this.id = id;
         this.originLocation = originLocation;
     }
 
@@ -32,7 +31,7 @@ public class Terrain implements Codec {
         // For codec
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
@@ -76,8 +75,8 @@ public class Terrain implements Codec {
         this.signLocation = signLocation;
     }
 
-    public static Terrain from(Block originBlock) {
-        return new Terrain(BlockAxis.from(
+    public static Terrain from(String id, Block originBlock) {
+        return new Terrain(id, BlockAxis.from(
                 originBlock.getLocation()
         ));
     }
@@ -90,7 +89,7 @@ public class Terrain implements Codec {
 
     @Override
     public void write(DataOutputStream output) throws IOException {
-        DataStreams.writeUuid(id, output);
+        DataStreams.writeString(id, output);
         skullLocation.write(output);
         originLocation.write(output);
         signLocation.write(output);
@@ -100,7 +99,7 @@ public class Terrain implements Codec {
 
     @Override
     public void read(DataInputStream input) throws IOException {
-        id = DataStreams.readUuid(input);
+        id = DataStreams.readString(input);
         skullLocation = BlockAxis.from(input);
         originLocation = BlockAxis.from(input);
         signLocation = BlockAxis.from(input);

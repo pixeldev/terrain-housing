@@ -7,15 +7,15 @@ import java.util.UUID;
 
 public class ClaimedTerrain {
 
-    private UUID terrainId;
+    private String terrainId;
 
     private Set<UUID> authorizedPlayers;
 
-    public UUID getTerrainId() {
+    public String getTerrainId() {
         return terrainId;
     }
 
-    public void setTerrainId(UUID terrainId) {
+    public void setTerrainId(String terrainId) {
         this.terrainId = terrainId;
     }
 
