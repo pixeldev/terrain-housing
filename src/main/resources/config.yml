@@ -1,4 +1,8 @@
 messages:
     terrain:
-        set-sign-location: "&aSe ha establecido la localización del cartel para el terreno &f%id%"
-        set-skull-location: "&aSe ha establecido la localización de la cabeza para el terreno &f%id%"
+        deleted: "&fEl terreno &a%id% &fTerreno eliminado correctamente"
+        teleported: "&fHas sido llevado al terreno &a%id%"
+        no-target-block: "&fDebes estar mirando un bloque para poder hacer esto"
+        target-not-sign: "&fDebes mirar una señal para poder hacer esto"
+        set-sign-location: "&fSe ha establecido la localización del cartel para el terreno &a%id%"
+        set-skull-location: "&fSe ha establecido la localización de la cabeza para el terreno &a%id%"
