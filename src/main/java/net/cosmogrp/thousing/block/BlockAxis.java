@@ -1,18 +1,23 @@
 package net.cosmogrp.thousing.block;
 
 import com.sk89q.worldedit.math.BlockVector3;
+import net.cosmogrp.thousing.codec.Codec;
+import net.cosmogrp.thousing.util.DataStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 
-public class BlockAxis {
+public class BlockAxis implements Codec {
 
-    private final String worldName;
-    private final int x;
-    private final int y;
-    private final int z;
+    private String worldName;
+    private int x;
+    private int y;
+    private int z;
 
     private BlockAxis(
             String worldName,
@@ -22,6 +27,10 @@ public class BlockAxis {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    private BlockAxis() {
+        // For codec
     }
 
     public World getWorld() {
@@ -42,6 +51,12 @@ public class BlockAxis {
 
     public Location toLocation() {
         return new Location(getWorld(), x, y, z);
+    }
+
+    public void move(Location location) {
+        this.x = location.getBlockX();
+        this.y = location.getBlockY();
+        this.z = location.getBlockZ();
     }
 
     public BlockVector3 toVector3() {
@@ -74,7 +89,7 @@ public class BlockAxis {
         return Objects.hash(worldName, x, y, z);
     }
 
-    public static BlockAxis fromLocation(Location location) {
+    public static BlockAxis from(Location location) {
         return new BlockAxis(
                 location.getWorld().getName(),
                 location.getBlockX(),
@@ -83,13 +98,25 @@ public class BlockAxis {
         );
     }
 
-    public static BlockAxis fromString(String string) {
-        String[] parts = string.split(":");
-        return new BlockAxis(
-                parts[0],
-                Integer.parseInt(parts[1]),
-                Integer.parseInt(parts[2]),
-                Integer.parseInt(parts[3])
-        );
+    public static BlockAxis from(DataInputStream input) throws IOException {
+        BlockAxis blockAxis = new BlockAxis();
+        blockAxis.read(input);
+        return blockAxis;
+    }
+
+    @Override
+    public void write(DataOutputStream output) throws IOException {
+        DataStreams.writeString(worldName, output);
+        output.writeInt(x);
+        output.writeInt(y);
+        output.writeInt(z);
+    }
+
+    @Override
+    public void read(DataInputStream input) throws IOException {
+        worldName = DataStreams.readString(input);
+        x = input.readInt();
+        y = input.readInt();
+        z = input.readInt();
     }
 }
