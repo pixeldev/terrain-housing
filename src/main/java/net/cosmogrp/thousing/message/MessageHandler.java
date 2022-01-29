@@ -19,7 +19,7 @@ public class MessageHandler {
     }
 
     public String makeMessage(String path, String... replacements) {
-        String message = configuration.getString(path);
+        String message = configuration.getString("messages." + path);
 
         if (message == null) {
             return path;

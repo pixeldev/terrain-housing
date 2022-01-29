@@ -46,11 +46,7 @@ public class TerrainPartFactory implements PartFactory {
                     CommandContext commandContext,
                     ArgumentStack stack
             ) {
-                if (!stack.hasNext()) {
-                    return null;
-                }
-
-                String terrainId = stack.next();
+                String terrainId = !stack.hasNext() ? "" : stack.next();
                 List<String> suggestions = new ArrayList<>();
 
                 for (Terrain terrain : terrainRepository.getTerrains()) {

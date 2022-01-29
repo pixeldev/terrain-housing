@@ -1,5 +1,6 @@
 messages:
     terrain:
+        created: "&fSe ha creado el terreno &a%id% &fcorrectamente"
         deleted: "&fEl terreno &a%id% &fTerreno eliminado correctamente"
         teleported: "&fHas sido llevado al terreno &a%id%"
         no-target-block: "&fDebes estar mirando un bloque para poder hacer esto"

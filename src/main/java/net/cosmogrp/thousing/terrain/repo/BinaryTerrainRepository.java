@@ -24,8 +24,7 @@ public class BinaryTerrainRepository implements TerrainRepository {
     private final Map<BlockAxis, String> terrainsBySign;
     private final Map<String, Terrain> terrainsById;
 
-    public @Inject BinaryTerrainRepository(Plugin plugin)
-            throws IOException {
+    public @Inject BinaryTerrainRepository(Plugin plugin) throws IOException {
         this.terrainsFile = new File(plugin.getDataFolder(), "terrains.dat");
 
         if (!terrainsFile.exists()) {
