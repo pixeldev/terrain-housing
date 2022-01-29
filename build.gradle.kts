@@ -5,18 +5,18 @@ plugins {
 repositories {
     mavenLocal()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven("https://maven.enginehub.org/repo/")
+    mavenCentral()
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.8")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.0.1") { isTransitive = false }
 }
 
 tasks {
     java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(8))
+            languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
 
