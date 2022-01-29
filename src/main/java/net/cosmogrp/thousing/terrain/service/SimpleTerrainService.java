@@ -28,6 +28,15 @@ public class SimpleTerrainService implements TerrainService {
     }
 
     @Override
+    public void moveOrigin(Player player, Terrain terrain) {
+        terrain.setOriginLocation(player);
+        messageHandler.sendMessage(
+                player, "terrain.moved-origin",
+                "%id%", terrain.getId()
+        );
+    }
+
+    @Override
     public void deleteTerrain(Player player, Terrain terrain) {
         terrainRepository.removeTerrain(terrain);
         messageHandler.sendMessage(

@@ -19,6 +19,11 @@ public class TerrainCommand implements CommandClass {
         terrainService.createTerrain(sender, id);
     }
 
+    @Command(names = "origin", permission = "terrain.origin")
+    public void runSetOrigin(@Sender Player sender, Terrain terrain) {
+        terrainService.moveOrigin(sender, terrain);
+    }
+
     @Command(names = "teleport", permission = "terrain.teleport")
     public void runTeleport(@Sender Player sender, Terrain terrain) {
         terrainService.teleportToTerrain(sender, terrain);

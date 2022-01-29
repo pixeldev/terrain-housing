@@ -9,6 +9,8 @@ public interface TerrainService {
 
     void createTerrain(Player player, String id);
 
+    void moveOrigin(Player player, Terrain terrain);
+
     void deleteTerrain(Player player, Terrain terrain);
 
     void teleportToTerrain(Player player, Terrain terrain);
