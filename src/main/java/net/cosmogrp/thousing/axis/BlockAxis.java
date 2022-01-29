@@ -1,4 +1,4 @@
-package net.cosmogrp.thousing.block;
+package net.cosmogrp.thousing.axis;
 
 import com.sk89q.worldedit.math.BlockVector3;
 import net.cosmogrp.thousing.codec.Codec;

@@ -1,6 +1,6 @@
 package net.cosmogrp.thousing.terrain.repo;
 
-import net.cosmogrp.thousing.block.BlockAxis;
+import net.cosmogrp.thousing.axis.BlockAxis;
 import net.cosmogrp.thousing.terrain.Terrain;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;

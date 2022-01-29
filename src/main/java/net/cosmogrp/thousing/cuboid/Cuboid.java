@@ -1,6 +1,6 @@
 package net.cosmogrp.thousing.cuboid;
 
-import net.cosmogrp.thousing.block.BlockAxis;
+import net.cosmogrp.thousing.axis.BlockAxis;
 import net.cosmogrp.thousing.codec.Codec;
 
 import java.io.DataInputStream;
