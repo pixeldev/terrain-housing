@@ -63,16 +63,16 @@ public class Terrain implements Codec {
         return signLocation;
     }
 
-    public void setSkullLocation(BlockAxis skullLocation) {
-        this.skullLocation = skullLocation;
+    public void setSkullLocation(Block skullBlock) {
+        this.skullLocation = BlockAxis.from(skullBlock.getLocation());
     }
 
     public void setOriginLocation(BlockAxis originLocation) {
         this.originLocation = originLocation;
     }
 
-    public void setSignLocation(BlockAxis signLocation) {
-        this.signLocation = signLocation;
+    public void setSignLocation(Block signBlock) {
+        this.signLocation = BlockAxis.from(signBlock.getLocation());
     }
 
     public static Terrain from(String id, Block originBlock) {
