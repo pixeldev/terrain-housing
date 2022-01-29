@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.jetbrains:annotations:22.0.0")
+    implementation("me.fixeddev:commandflow-brigadier:0.5.0-SNAPSHOT")
     implementation("me.yushust.inject:core:0.4.5-SNAPSHOT")
 
     compileOnly("org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT")
