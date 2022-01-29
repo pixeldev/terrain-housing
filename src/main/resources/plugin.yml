@@ -1,0 +1,16 @@
+name: TerrainHousing
+main: net.cosmogrp.thousing.TerrainHousingPlugin
+version: @version@
+author: CosmoGroup Development
+depend: [WorldEdit]
+api-version: 1.13
+description: Build you beautiful house in a designated area, access everywhere!
+
+commands:
+    terrainhousing:
+        description: TerrainHousing base command
+        aliases: [th, trh]
+permissions:
+    TerrainHousing.Admin:
+        default: op
+        description: Give access to everything
