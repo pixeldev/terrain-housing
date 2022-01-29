@@ -99,9 +99,9 @@ public class PlayerViewAxis implements Codec {
         Location playerLocation = player.getLocation();
         return new PlayerViewAxis(
                 playerLocation.getWorld().getName(),
-                playerLocation.getX(),
-                playerLocation.getY(),
-                playerLocation.getZ(),
+                playerLocation.getBlockX() + 0.5,
+                playerLocation.getBlockY() + 0.5,
+                playerLocation.getBlockZ() + 0.5,
                 playerLocation.getYaw(),
                 playerLocation.getPitch()
         );
