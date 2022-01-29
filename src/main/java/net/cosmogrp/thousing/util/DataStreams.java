@@ -3,11 +3,29 @@ package net.cosmogrp.thousing.util;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 public final class DataStreams {
 
     private DataStreams() {
         throw new UnsupportedOperationException();
+    }
+
+    public static void writeUuid(
+            UUID value,
+            DataOutputStream output
+    ) throws IOException {
+        output.writeLong(value.getMostSignificantBits());
+        output.writeLong(value.getLeastSignificantBits());
+    }
+
+    public static UUID readUuid(
+            DataInputStream input
+    ) throws IOException {
+        return new UUID(
+                input.readLong(),
+                input.readLong()
+        );
     }
 
     public static void writeString(
