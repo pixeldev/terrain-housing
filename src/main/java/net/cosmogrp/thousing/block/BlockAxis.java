@@ -1,5 +1,6 @@
 package net.cosmogrp.thousing.block;
 
+import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -41,6 +42,10 @@ public class BlockAxis {
 
     public Location toLocation() {
         return new Location(getWorld(), x, y, z);
+    }
+
+    public BlockVector3 toVector3() {
+        return BlockVector3.at(x, y, z);
     }
 
     @Override
