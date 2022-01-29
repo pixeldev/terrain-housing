@@ -20,7 +20,8 @@ public class BinaryTerrainRepository implements TerrainRepository {
 
     private final File terrainsFile;
 
-    private final Map<BlockAxis, Terrain> terrainsBySign;
+    private final Map<BlockAxis, String> terrainsBySign;
+    private final Map<String, Terrain> terrainsById;
 
     public @Inject BinaryTerrainRepository(Plugin plugin)
             throws IOException {
@@ -33,23 +34,38 @@ public class BinaryTerrainRepository implements TerrainRepository {
         }
 
         this.terrainsBySign = new HashMap<>();
+        this.terrainsById = new HashMap<>();
     }
 
     @Override
     public @Nullable Terrain getTerrain(Block signBlock) {
-        return terrainsBySign.get(BlockAxis.from(
+        String terrainId = terrainsBySign.get(BlockAxis.from(
                 signBlock.getLocation()
         ));
+
+        if (terrainId == null) {
+            return null;
+        }
+
+        return getTerrain(terrainId);
+    }
+
+    @Override
+    public @Nullable Terrain getTerrain(String id) {
+        return terrainsById.get(id);
     }
 
     @Override
     public void addTerrain(Terrain terrain) {
-        terrainsBySign.put(terrain.getSignLocation(), terrain);
+        String id = terrain.getId();
+        terrainsBySign.put(terrain.getSignLocation(), id);
+        terrainsById.put(id, terrain);
     }
 
     @Override
     public void removeTerrain(Terrain terrain) {
         terrainsBySign.remove(terrain.getSignLocation());
+        terrainsById.remove(terrain.getId());
     }
 
     @Override
@@ -70,7 +86,7 @@ public class BinaryTerrainRepository implements TerrainRepository {
                 new FileOutputStream(terrainsFile)
         )) {
             output.writeInt(terrainsBySign.size());
-            for (Terrain terrain : terrainsBySign.values()) {
+            for (Terrain terrain : terrainsById.values()) {
                 terrain.write(output);
             }
         }

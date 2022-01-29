@@ -8,6 +8,8 @@ public interface TerrainRepository {
 
     @Nullable Terrain getTerrain(Block signBlock);
 
+    @Nullable Terrain getTerrain(String id);
+
     void addTerrain(Terrain terrain);
 
     void removeTerrain(Terrain terrain);
