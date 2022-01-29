@@ -56,10 +56,13 @@ public class BinaryTerrainRepository implements TerrainRepository {
     }
 
     @Override
+    public void updateTerrain(Terrain terrain) {
+        terrainsBySign.put(terrain.getSignLocation(), terrain.getId());
+    }
+
+    @Override
     public void addTerrain(Terrain terrain) {
-        String id = terrain.getId();
-        terrainsBySign.put(terrain.getSignLocation(), id);
-        terrainsById.put(id, terrain);
+        terrainsById.put(terrain.getId(), terrain);
     }
 
     @Override

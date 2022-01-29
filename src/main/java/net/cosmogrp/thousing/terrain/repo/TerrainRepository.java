@@ -10,6 +10,8 @@ public interface TerrainRepository {
 
     @Nullable Terrain getTerrain(String id);
 
+    void updateTerrain(Terrain terrain);
+
     void addTerrain(Terrain terrain);
 
     void removeTerrain(Terrain terrain);
