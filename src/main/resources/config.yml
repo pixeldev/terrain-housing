@@ -1,0 +1,4 @@
+messages:
+    terrain:
+        set-sign-location: "&aSe ha establecido la localización del cartel para el terreno &f%id%"
+        set-skull-location: "&aSe ha establecido la localización de la cabeza para el terreno &f%id%"
