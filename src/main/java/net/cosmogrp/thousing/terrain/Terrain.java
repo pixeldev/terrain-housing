@@ -1,10 +1,12 @@
 package net.cosmogrp.thousing.terrain;
 
 import net.cosmogrp.thousing.axis.BlockAxis;
+import net.cosmogrp.thousing.axis.PlayerViewAxis;
 import net.cosmogrp.thousing.codec.Codec;
 import net.cosmogrp.thousing.cuboid.Cuboid;
 import net.cosmogrp.thousing.util.DataStreams;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.DataInputStream;
@@ -15,16 +17,16 @@ public class Terrain implements Codec {
 
     private String id;
 
+    private PlayerViewAxis originLocation;
     private BlockAxis skullLocation;
-    private BlockAxis originLocation;
     private BlockAxis signLocation;
 
     private Cuboid cuboid;
     private boolean enabled;
 
-    private Terrain(String id, BlockAxis originLocation) {
+    private Terrain(String id, Player player) {
         this.id = id;
-        this.originLocation = originLocation;
+        this.originLocation = PlayerViewAxis.from(player);
     }
 
     private Terrain() {
@@ -51,12 +53,16 @@ public class Terrain implements Codec {
         this.enabled = enabled;
     }
 
-    public BlockAxis getSkullLocation() {
-        return skullLocation;
+    public PlayerViewAxis getOriginLocation() {
+        return originLocation;
     }
 
-    public BlockAxis getOriginLocation() {
-        return originLocation;
+    public void setOriginLocation(Player player) {
+        this.originLocation = PlayerViewAxis.from(player);
+    }
+
+    public BlockAxis getSkullLocation() {
+        return skullLocation;
     }
 
     public BlockAxis getSignLocation() {
@@ -67,18 +73,12 @@ public class Terrain implements Codec {
         this.skullLocation = BlockAxis.from(skullBlock.getLocation());
     }
 
-    public void setOriginLocation(BlockAxis originLocation) {
-        this.originLocation = originLocation;
-    }
-
     public void setSignLocation(Block signBlock) {
         this.signLocation = BlockAxis.from(signBlock.getLocation());
     }
 
-    public static Terrain from(String id, Block originBlock) {
-        return new Terrain(id, BlockAxis.from(
-                originBlock.getLocation()
-        ));
+    public static Terrain from(String id, Player player) {
+        return new Terrain(id, player);
     }
 
     public static Terrain from(DataInputStream input) throws IOException {
@@ -90,8 +90,8 @@ public class Terrain implements Codec {
     @Override
     public void write(DataOutputStream output) throws IOException {
         DataStreams.writeString(id, output);
-        skullLocation.write(output);
         originLocation.write(output);
+        skullLocation.write(output);
         signLocation.write(output);
         cuboid.write(output);
         output.writeBoolean(enabled);
@@ -100,8 +100,8 @@ public class Terrain implements Codec {
     @Override
     public void read(DataInputStream input) throws IOException {
         id = DataStreams.readString(input);
+        originLocation = PlayerViewAxis.from(input);
         skullLocation = BlockAxis.from(input);
-        originLocation = BlockAxis.from(input);
         signLocation = BlockAxis.from(input);
         cuboid = Cuboid.from(input);
         enabled = input.readBoolean();

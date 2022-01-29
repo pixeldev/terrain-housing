@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface TerrainService {
 
-    void createTerrain(Player player, String id, Block originBlock);
+    void createTerrain(Player player, String id);
 
     void deleteTerrain(Player player, Terrain terrain);
 

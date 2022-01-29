@@ -16,7 +16,7 @@ public class TerrainCommand implements CommandClass {
 
     @Command(names = "create", permission = "terrain.create")
     public void runCreate(@Sender Player sender, String id) {
-        terrainService.createTerrain(sender, id, sender.getLocation().getBlock());
+        terrainService.createTerrain(sender, id);
     }
 
     @Command(names = "teleport", permission = "terrain.teleport")

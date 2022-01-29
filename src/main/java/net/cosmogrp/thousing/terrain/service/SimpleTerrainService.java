@@ -17,8 +17,8 @@ public class SimpleTerrainService implements TerrainService {
     @Inject private TerrainRepository terrainRepository;
 
     @Override
-    public void createTerrain(Player player, String id, Block originBlock) {
-        Terrain terrain = Terrain.from(id, originBlock);
+    public void createTerrain(Player player, String id) {
+        Terrain terrain = Terrain.from(id, player);
 
         terrainRepository.addTerrain(terrain);
         messageHandler.sendMessage(
