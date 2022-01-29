@@ -15,6 +15,7 @@ public class Terrain {
     private BlockAxis signLocation;
 
     private Cuboid cuboid;
+    private boolean enabled;
 
     public Terrain(
             BlockAxis skullLocation,
@@ -37,6 +38,14 @@ public class Terrain {
 
     public void setCuboid(Cuboid cuboid) {
         this.cuboid = cuboid;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public BlockAxis getSkullLocation() {
