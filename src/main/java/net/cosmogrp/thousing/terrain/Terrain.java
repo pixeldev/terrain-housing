@@ -1,14 +1,20 @@
 package net.cosmogrp.thousing.terrain;
 
 import net.cosmogrp.thousing.block.BlockAxis;
+import net.cosmogrp.thousing.codec.Codec;
 import net.cosmogrp.thousing.cuboid.Cuboid;
+import net.cosmogrp.thousing.util.DataStreams;
+import org.bukkit.block.Block;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
-public class Terrain {
+public class Terrain implements Codec {
 
-    private final UUID id;
+    private UUID id;
 
     private BlockAxis skullLocation;
     private BlockAxis originLocation;
@@ -17,15 +23,13 @@ public class Terrain {
     private Cuboid cuboid;
     private boolean enabled;
 
-    public Terrain(
-            BlockAxis skullLocation,
-            BlockAxis originLocation,
-            BlockAxis signLocation
-    ) {
+    private Terrain(BlockAxis originLocation) {
         this.id = UUID.randomUUID();
-        this.skullLocation = skullLocation;
         this.originLocation = originLocation;
-        this.signLocation = signLocation;
+    }
+
+    private Terrain() {
+        // For codec
     }
 
     public UUID getId() {
@@ -72,4 +76,35 @@ public class Terrain {
         this.signLocation = signLocation;
     }
 
+    public static Terrain from(Block originBlock) {
+        return new Terrain(BlockAxis.from(
+                originBlock.getLocation()
+        ));
+    }
+
+    public static Terrain from(DataInputStream input) throws IOException {
+        Terrain terrain = new Terrain();
+        terrain.read(input);
+        return terrain;
+    }
+
+    @Override
+    public void write(DataOutputStream output) throws IOException {
+        DataStreams.writeUuid(id, output);
+        skullLocation.write(output);
+        originLocation.write(output);
+        signLocation.write(output);
+        cuboid.write(output);
+        output.writeBoolean(enabled);
+    }
+
+    @Override
+    public void read(DataInputStream input) throws IOException {
+        id = DataStreams.readUuid(input);
+        skullLocation = BlockAxis.from(input);
+        originLocation = BlockAxis.from(input);
+        signLocation = BlockAxis.from(input);
+        cuboid = Cuboid.from(input);
+        enabled = input.readBoolean();
+    }
 }
