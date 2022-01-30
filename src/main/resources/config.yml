@@ -1,3 +1,6 @@
+schematic:
+    path: "/home/05_Survival_Pk/schematics"
+
 messages:
     terrain:
         created: "&fSe ha creado el terreno &a%id% &fcorrectamente"

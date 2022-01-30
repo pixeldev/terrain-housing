@@ -1,7 +1,6 @@
 package net.cosmogrp.thousing.cuboid;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import net.cosmogrp.thousing.axis.BlockAxis;
