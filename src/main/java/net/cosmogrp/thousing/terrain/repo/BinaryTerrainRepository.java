@@ -26,13 +26,6 @@ public class BinaryTerrainRepository implements TerrainRepository {
 
     public @Inject BinaryTerrainRepository(Plugin plugin) throws IOException {
         this.terrainsFile = new File(plugin.getDataFolder(), "terrains.dat");
-
-        if (!terrainsFile.exists()) {
-            if (!terrainsFile.createNewFile()) {
-                throw new IOException("Could not create terrains file");
-            }
-        }
-
         this.terrainsBySign = new HashMap<>();
         this.terrainsById = new HashMap<>();
     }
@@ -78,6 +71,10 @@ public class BinaryTerrainRepository implements TerrainRepository {
 
     @Override
     public void loadTerrains() throws Exception {
+        if (!makeFile(false)) {
+            return;
+        }
+
         try (DataInputStream input = new DataInputStream(
                 new FileInputStream(terrainsFile)
         )) {
@@ -90,6 +87,10 @@ public class BinaryTerrainRepository implements TerrainRepository {
 
     @Override
     public void saveTerrains() throws Exception {
+        if (!makeFile(true)) {
+            return;
+        }
+
         try (DataOutputStream output = new DataOutputStream(
                 new FileOutputStream(terrainsFile)
         )) {
@@ -98,6 +99,14 @@ public class BinaryTerrainRepository implements TerrainRepository {
                 terrain.write(output);
             }
         }
+    }
+
+    private boolean makeFile(boolean create) throws IOException {
+        if (!terrainsFile.exists() && create) {
+            return terrainsFile.createNewFile();
+        }
+
+        return false;
     }
 
 }
