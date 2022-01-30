@@ -2,6 +2,7 @@ package net.cosmogrp.thousing.module;
 
 import me.yushust.inject.AbstractModule;
 import net.cosmogrp.thousing.TerrainHousingPlugin;
+import net.cosmogrp.thousing.listener.PlayerConnectionListener;
 import net.cosmogrp.thousing.listener.PlayerInteractListener;
 import net.cosmogrp.thousing.message.MessageHandler;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,7 +31,8 @@ public class MainModule extends AbstractModule {
 
         multibind(Listener.class)
                 .asSet()
-                .to(PlayerInteractListener.class);
+                .to(PlayerInteractListener.class)
+                .to(PlayerConnectionListener.class);
 
         install(new TerrainModule(), new UserModule());
     }
