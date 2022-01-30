@@ -1,5 +1,6 @@
 package net.cosmogrp.thousing.cuboid;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
@@ -30,7 +31,7 @@ public class Cuboid implements Codec {
 
     public Region toWorldEditCuboid() {
         return new CuboidRegion(
-                new BukkitWorld(minPoint.getWorld()),
+                BukkitAdapter.adapt(minPoint.getWorld()),
                 minPoint.toVector3(),
                 maxPoint.toVector3()
         );
