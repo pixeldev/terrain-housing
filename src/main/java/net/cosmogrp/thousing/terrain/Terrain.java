@@ -27,6 +27,7 @@ public class Terrain implements Codec {
     private Terrain(String id, Player player) {
         this.id = id;
         this.originLocation = PlayerViewAxis.from(player);
+        this.enabled = false;
     }
 
     private Terrain() {

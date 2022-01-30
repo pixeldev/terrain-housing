@@ -29,6 +29,8 @@ public class SimpleTerrainService implements TerrainService {
                 player, "terrain.created",
                 "%id%", terrain.getId()
         );
+
+        sendMissingProperties(player, terrain);
     }
 
     @Override
@@ -44,6 +46,8 @@ public class SimpleTerrainService implements TerrainService {
                     player, "terrain.set-cuboid",
                     "%id%", terrain.getId()
             );
+
+            sendMissingProperties(player, terrain);
         } catch (IncompleteRegionException e) {
             messageHandler.sendMessage(
                     player, "terrain.no-selection"
@@ -102,11 +106,19 @@ public class SimpleTerrainService implements TerrainService {
             return;
         }
 
-        terrain.setSignLocation(targetBlock);
+        if (targetBlock.getType() != Material.PLAYER_HEAD) {
+            messageHandler.sendMessage(
+                    sender, "terrain.no-skull-block"
+            );
+            return;
+        }
+
+        terrain.setSkullLocation(targetBlock);
         messageHandler.sendMessage(
                 sender, "terrain.set-skull-location",
                 "%id%", terrain.getId()
         );
+        sendMissingProperties(sender, terrain);
     }
 
     @Override
@@ -121,16 +133,58 @@ public class SimpleTerrainService implements TerrainService {
 
         if (!(targetBlock.getState() instanceof Sign)) {
             messageHandler.sendMessage(
-                    sender, "terrain.not-sign"
+                    sender, "terrain.no-sign-block"
             );
             return;
         }
 
-        terrain.setSkullLocation(targetBlock);
+        terrain.setSignLocation(targetBlock);
         terrainRepository.updateTerrain(terrain);
         messageHandler.sendMessage(
                 sender, "terrain.set-sign-location",
                 "%id%", terrain.getId()
         );
+
+        sendMissingProperties(sender, terrain);
+    }
+
+    private void sendMissingProperties(
+            Player player,
+            Terrain terrain
+    ) {
+        StringBuilder message = new StringBuilder();
+        boolean completed = true;
+
+        if (terrain.getCuboid() == null) {
+            message.append(messageHandler.makeMessage("terrain.missing-cuboid"))
+                    .append("\n");
+            completed = false;
+        }
+
+        if (terrain.getSignLocation() == null) {
+            message.append(messageHandler.makeMessage("terrain.missing-sign"))
+                    .append("\n");
+            completed = false;
+        }
+
+        if (terrain.getSkullLocation() == null) {
+            message.append(messageHandler.makeMessage("terrain.missing-skull"))
+                    .append("\n");
+            completed = false;
+        }
+
+        if (completed) {
+            terrain.setEnabled(true);
+            messageHandler.sendMessage(
+                    player, "terrain.setup-completed",
+                    "%id%", terrain.getId()
+            );
+        } else {
+            messageHandler.sendMessages(
+                    player, "terrain.missing-setup",
+                    "%id%", terrain.getId(),
+                    "%missing%", message.toString()
+            );
+        }
     }
 }
