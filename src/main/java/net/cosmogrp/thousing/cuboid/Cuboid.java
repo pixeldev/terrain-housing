@@ -1,5 +1,6 @@
 package net.cosmogrp.thousing.cuboid;
 
+import com.sk89q.worldedit.regions.Region;
 import net.cosmogrp.thousing.axis.BlockAxis;
 import net.cosmogrp.thousing.codec.Codec;
 
@@ -23,6 +24,13 @@ public class Cuboid implements Codec {
 
     public BlockAxis getMaxPoint() {
         return maxPoint;
+    }
+
+    public static Cuboid from(Region region) {
+        String worldName = region.getWorld().getName();
+        BlockAxis minPoint = BlockAxis.from(worldName, region.getMinimumPoint());
+        BlockAxis maxPoint = BlockAxis.from(worldName, region.getMaximumPoint());
+        return new Cuboid(minPoint, maxPoint);
     }
 
     public static Cuboid from(DataInputStream input) throws IOException {

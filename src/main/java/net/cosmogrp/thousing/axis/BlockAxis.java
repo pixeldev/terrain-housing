@@ -98,6 +98,15 @@ public class BlockAxis implements Codec {
         );
     }
 
+    public static BlockAxis from(String worldName, BlockVector3 vector3) {
+        return new BlockAxis(
+                worldName,
+                vector3.getBlockX(),
+                vector3.getBlockY(),
+                vector3.getBlockZ()
+        );
+    }
+
     public static BlockAxis from(DataInputStream input) throws IOException {
         BlockAxis blockAxis = new BlockAxis();
         blockAxis.read(input);
