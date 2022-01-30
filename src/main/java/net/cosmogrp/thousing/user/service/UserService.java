@@ -10,4 +10,8 @@ public interface UserService {
 
     void tryToClaim(Player player, Terrain terrain);
 
+    void loadUser(Player player);
+
+    void saveUser(Player player);
+
 }

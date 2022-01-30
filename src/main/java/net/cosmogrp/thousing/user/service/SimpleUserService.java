@@ -75,4 +75,24 @@ public class SimpleUserService implements UserService {
         terrain.setClaimedBy(player.getUniqueId());
         messageHandler.sendMessage(player, "terrain.claimed");
     }
+
+    @Override
+    public void loadUser(Player player) {
+        userRepository.loadUser(player);
+    }
+
+    @Override
+    public void saveUser(Player player) {
+        User user = userRepository.saveUser(player);
+
+        if (user == null) {
+            return;
+        }
+
+        ClaimedTerrain claimedTerrain = user.getClaimedTerrain();
+
+        if (claimedTerrain != null) {
+            schematicHandler.saveSchematic(claimedTerrain);
+        }
+    }
 }
