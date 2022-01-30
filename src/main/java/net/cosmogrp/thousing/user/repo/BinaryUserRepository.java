@@ -77,19 +77,18 @@ public class BinaryUserRepository implements UserRepository {
     }
 
     @Override
-    public void saveUser(Player player) {
+    public @Nullable User saveUser(Player player) {
         UUID playerId = player.getUniqueId();
+        User user = users.get(playerId);
+
+        if (user == null) {
+            return null;
+        }
 
         executor.execute(() -> {
             File file = makeUserFile(playerId, true);
 
             if (file == null) {
-                return;
-            }
-
-            User user = users.get(playerId);
-
-            if (user == null) {
                 return;
             }
 
@@ -99,6 +98,8 @@ public class BinaryUserRepository implements UserRepository {
                 e.printStackTrace();
             }
         });
+
+        return user;
     }
 
     private @Nullable File makeUserFile(UUID playerId, boolean create) {
