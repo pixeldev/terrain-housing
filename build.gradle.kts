@@ -6,6 +6,7 @@ plugins {
 repositories {
     mavenLocal()
     maven("https://repo.unnamed.team/repository/unnamed-public/")
+    maven("https://maven.enginehub.org/repo/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     mavenCentral()
 }
@@ -17,14 +18,23 @@ dependencies {
     implementation("me.yushust.inject:core:0.4.5-SNAPSHOT")
 
     compileOnly("org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.0.1") { isTransitive = false }
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.0.1") { isTransitive = false }
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.8")
 }
 
 tasks {
+    shadowJar {
+        val path = "net.cosmogrp.thousing.libs"
+        relocate("com.zaxxer", "$path.zaxxer")
+        relocate("me.fixeddev", "$path.fixeddev")
+        relocate("me.yushust", "$path.yushust")
+        relocate("me.lucko", "$path.lucko")
+        relocate("net.kyori", "$path.kyori")
+        relocate("com.mojang", "$path.mojang")
+    }
+
     java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
+            languageVersion.set(JavaLanguageVersion.of(16))
         }
     }
 
