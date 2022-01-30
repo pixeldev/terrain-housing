@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 public class Terrain implements Codec {
 
@@ -23,6 +24,8 @@ public class Terrain implements Codec {
 
     private Cuboid cuboid;
     private boolean enabled;
+
+    private UUID claimedBy;
 
     private Terrain(String id, Player player) {
         this.id = id;
@@ -36,6 +39,14 @@ public class Terrain implements Codec {
 
     public String getId() {
         return id;
+    }
+
+    public @Nullable UUID getClaimedBy() {
+        return claimedBy;
+    }
+
+    public void setClaimedBy(@Nullable UUID claimedBy) {
+        this.claimedBy = claimedBy;
     }
 
     public @Nullable Cuboid getCuboid() {
