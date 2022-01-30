@@ -1,5 +1,7 @@
 package net.cosmogrp.thousing.cuboid;
 
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import net.cosmogrp.thousing.axis.BlockAxis;
 import net.cosmogrp.thousing.codec.Codec;
@@ -24,6 +26,14 @@ public class Cuboid implements Codec {
 
     public BlockAxis getMaxPoint() {
         return maxPoint;
+    }
+
+    public Region toWorldEditCuboid() {
+        return new CuboidRegion(
+                new BukkitWorld(minPoint.getWorld()),
+                minPoint.toVector3(),
+                maxPoint.toVector3()
+        );
     }
 
     public static Cuboid from(Region region) {
