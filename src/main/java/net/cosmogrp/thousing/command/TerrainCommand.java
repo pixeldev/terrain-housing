@@ -19,6 +19,11 @@ public class TerrainCommand implements CommandClass {
         terrainService.createTerrain(sender, id);
     }
 
+    @Command(names = "cuboid", permission = "terrain.cuboid")
+    public void runCuboid(@Sender Player sender, Terrain terrain) {
+        terrainService.setupCuboid(sender, terrain);
+    }
+
     @Command(names = "origin", permission = "terrain.origin")
     public void runSetOrigin(@Sender Player sender, Terrain terrain) {
         terrainService.moveOrigin(sender, terrain);

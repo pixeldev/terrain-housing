@@ -1,5 +1,9 @@
 package net.cosmogrp.thousing.terrain.service;
 
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.regions.Region;
+import net.cosmogrp.thousing.cuboid.Cuboid;
 import net.cosmogrp.thousing.message.MessageHandler;
 import net.cosmogrp.thousing.terrain.Terrain;
 import net.cosmogrp.thousing.terrain.repo.TerrainRepository;
@@ -25,6 +29,26 @@ public class SimpleTerrainService implements TerrainService {
                 player, "terrain.created",
                 "%id%", terrain.getId()
         );
+    }
+
+    @Override
+    public void setupCuboid(Player player, Terrain terrain) {
+        try {
+            Region selection = WorldEditPlugin
+                    .getPlugin(WorldEditPlugin.class)
+                    .getSession(player)
+                    .getSelection();
+
+            terrain.setCuboid(Cuboid.from(selection));
+            messageHandler.sendMessage(
+                    player, "terrain.set-cuboid",
+                    "%id%", terrain.getId()
+            );
+        } catch (IncompleteRegionException e) {
+            messageHandler.sendMessage(
+                    player, "terrain.no-selection"
+            );
+        }
     }
 
     @Override
