@@ -18,6 +18,8 @@ public class ClaimedTerrain implements Codec {
     private UUID ownerId;
     private final Set<UUID> authorizedPlayers;
 
+    private boolean loaded;
+
     private ClaimedTerrain(String terrainId, UUID ownerId) {
         this.terrainId = terrainId;
         this.ownerId = ownerId;
@@ -31,6 +33,14 @@ public class ClaimedTerrain implements Codec {
 
     public String getTerrainId() {
         return terrainId;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
     }
 
     public UUID getOwnerId() {
@@ -49,8 +59,8 @@ public class ClaimedTerrain implements Codec {
         return authorizedPlayers.contains(player.getUniqueId());
     }
 
-    public static ClaimedTerrain from(String terrainId, UUID ownerId) {
-        return new ClaimedTerrain(terrainId, ownerId);
+    public static ClaimedTerrain from(String terrainId, Player player) {
+        return new ClaimedTerrain(terrainId, player.getUniqueId());
     }
 
     public static ClaimedTerrain from(DataInputStream in) throws IOException {
