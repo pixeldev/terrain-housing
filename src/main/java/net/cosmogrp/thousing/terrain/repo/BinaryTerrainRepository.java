@@ -106,7 +106,7 @@ public class BinaryTerrainRepository implements TerrainRepository {
             return terrainsFile.createNewFile();
         }
 
-        return false;
+        return terrainsFile.exists();
     }
 
 }
