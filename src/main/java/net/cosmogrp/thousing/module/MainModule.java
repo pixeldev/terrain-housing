@@ -23,7 +23,7 @@ public class MainModule extends AbstractModule {
         bind(FileConfiguration.class).toInstance(plugin.getConfig());
         bind(MessageHandler.class).singleton();
 
-        install(new TerrainModule());
+        install(new TerrainModule(), new UserModule());
     }
 
 }
