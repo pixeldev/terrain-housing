@@ -80,7 +80,9 @@ public class BinaryTerrainRepository implements TerrainRepository {
         )) {
             int size = input.readInt();
             for (int i = 0; i < size; i++) {
-                addTerrain(Terrain.from(input));
+                Terrain terrain = Terrain.from(input);
+                addTerrain(terrain);
+                terrainsBySign.put(terrain.getSignLocation(), terrain.getId());
             }
         }
     }
