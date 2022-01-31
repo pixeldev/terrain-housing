@@ -101,6 +101,7 @@ public class WorldEditSchematicHandler implements SchematicHandler {
             );
 
             copy.setCopyingEntities(true);
+            copy.setRemovingEntities(true);
 
             try {
                 Operations.complete(copy);
