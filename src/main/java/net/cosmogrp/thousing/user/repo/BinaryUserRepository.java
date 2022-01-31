@@ -139,7 +139,7 @@ public class BinaryUserRepository implements UserRepository {
             }
         }
 
-        if (!created) {
+        if (!created && create) {
             logger.warning("Could not create user file for "
                     + playerId);
             return null;
