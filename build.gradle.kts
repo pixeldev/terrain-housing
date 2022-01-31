@@ -25,6 +25,9 @@ dependencies {
 
 tasks {
     shadowJar {
+        archiveBaseName.set("terrain-housing")
+        archiveClassifier.set("")
+
         val path = "net.cosmogrp.thousing.libs"
         relocate("me.fixeddev", "$path.fixeddev")
         relocate("me.yushust", "$path.yushust")
