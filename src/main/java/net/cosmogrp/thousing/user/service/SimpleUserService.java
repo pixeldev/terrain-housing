@@ -158,7 +158,7 @@ public class SimpleUserService implements UserService {
 
     @Override
     public void tryToClaim(Player player, Terrain terrain) {
-        if (!player.hasPermission("thousing.claim")) {
+        if (!player.hasPermission("terrain.claim")) {
             messageHandler.sendMessages(player, "user.no-claim-permission");
             return;
         }
