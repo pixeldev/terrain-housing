@@ -7,8 +7,11 @@ import me.fixeddev.commandflow.annotated.part.PartInjector;
 import me.fixeddev.commandflow.annotated.part.defaults.DefaultsModule;
 import me.fixeddev.commandflow.brigadier.BrigadierCommandManager;
 import me.fixeddev.commandflow.bukkit.factory.BukkitModule;
+import me.fixeddev.commandflow.translator.DefaultTranslator;
 import me.yushust.inject.Injector;
 import net.cosmogrp.thousing.command.TerrainCommand;
+import net.cosmogrp.thousing.command.internal.CustomTranslatorProvider;
+import net.cosmogrp.thousing.command.internal.CustomUsageBuilder;
 import net.cosmogrp.thousing.command.internal.TerrainPartFactory;
 import net.cosmogrp.thousing.module.MainModule;
 import net.cosmogrp.thousing.terrain.Terrain;
@@ -29,6 +32,8 @@ public class TerrainHousingPlugin extends JavaPlugin {
     @Inject private TerrainPartFactory terrainPartFactory;
     @Inject private TerrainRepository terrainRepository;
     @Inject private UserService userService;
+    @Inject private CustomTranslatorProvider translatorProvider;
+    @Inject private CustomUsageBuilder usageBuilder;
 
     @Override
     public void onLoad() {
@@ -52,6 +57,9 @@ public class TerrainHousingPlugin extends JavaPlugin {
         }
 
         CommandManager commandManager = new BrigadierCommandManager(this);
+        commandManager.setUsageBuilder(usageBuilder);
+        commandManager.setTranslator(new DefaultTranslator(translatorProvider));
+
         PartInjector partInjector = PartInjector.create();
 
         partInjector.install(new BukkitModule());
