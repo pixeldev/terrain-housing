@@ -7,6 +7,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -43,9 +44,11 @@ public class WorldGuardRegionHandler implements RegionHandler {
                     cuboidRegion.getMaximumPoint()
             );
 
+            protectedRegion.setPriority(100);
+
             Map<Flag<?>, Object> flags = new HashMap<>();
-            flags.put(Flags.WATER_FLOW, false);
-            flags.put(Flags.LAVA_FLOW, false);
+            flags.put(Flags.WATER_FLOW, StateFlag.State.DENY);
+            flags.put(Flags.LAVA_FLOW, StateFlag.State.DENY);
 
             protectedRegion.setFlags(flags);
             regionManager.addRegion(protectedRegion);
