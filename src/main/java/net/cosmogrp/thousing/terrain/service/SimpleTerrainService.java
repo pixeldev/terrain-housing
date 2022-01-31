@@ -3,6 +3,7 @@ package net.cosmogrp.thousing.terrain.service;
 import net.cosmogrp.thousing.cuboid.Cuboid;
 import net.cosmogrp.thousing.cuboid.WorldEditSelection;
 import net.cosmogrp.thousing.message.MessageHandler;
+import net.cosmogrp.thousing.region.RegionHandler;
 import net.cosmogrp.thousing.schematic.SchematicHandler;
 import net.cosmogrp.thousing.terrain.Terrain;
 import net.cosmogrp.thousing.terrain.repo.TerrainRepository;
@@ -20,6 +21,7 @@ public class SimpleTerrainService implements TerrainService {
     @Inject private TerrainRepository terrainRepository;
     @Inject private WorldEditSelection worldEditSelection;
     @Inject private SchematicHandler schematicHandler;
+    @Inject private RegionHandler regionHandler;
 
     @Override
     public void createTerrain(Player player, String id) {
@@ -64,6 +66,8 @@ public class SimpleTerrainService implements TerrainService {
                     player, "terrain.set-cuboid",
                     "%id%", terrain.getId()
             );
+            regionHandler.removeRegion(terrain);
+            regionHandler.createRegion(terrain);
             sendMissingProperties(player, terrain);
         }
     }
