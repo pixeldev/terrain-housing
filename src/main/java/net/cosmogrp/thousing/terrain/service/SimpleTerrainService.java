@@ -23,6 +23,14 @@ public class SimpleTerrainService implements TerrainService {
 
     @Override
     public void createTerrain(Player player, String id) {
+        if (terrainRepository.getTerrain(id) != null) {
+            messageHandler.sendMessage(
+                    player, "terrain.already-exists",
+                    "%id%", id
+            );
+            return;
+        }
+
         Terrain terrain = Terrain.from(id, player);
 
         terrainRepository.addTerrain(terrain);
