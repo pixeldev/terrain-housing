@@ -47,6 +47,10 @@ public class ClaimedTerrain implements Codec {
         return ownerId;
     }
 
+    public Iterable<UUID> getAuthorizedPlayers() {
+        return authorizedPlayers;
+    }
+
     public boolean authorizePlayer(Player player) {
         return authorizedPlayers.add(player.getUniqueId());
     }

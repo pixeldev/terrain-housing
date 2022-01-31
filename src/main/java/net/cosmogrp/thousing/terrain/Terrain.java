@@ -5,6 +5,7 @@ import net.cosmogrp.thousing.axis.PlayerViewAxis;
 import net.cosmogrp.thousing.codec.Codec;
 import net.cosmogrp.thousing.cuboid.Cuboid;
 import net.cosmogrp.thousing.util.DataStreams;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -43,6 +44,10 @@ public class Terrain implements Codec {
 
     public String getRegionId() {
         return id + "-terrain-region";
+    }
+
+    public World getWorld() {
+        return originLocation.getWorld();
     }
 
     public @Nullable UUID getClaimedBy() {
