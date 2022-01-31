@@ -130,19 +130,26 @@ public class BinaryUserRepository implements UserRepository {
 
         boolean created = file.exists();
 
-        if (create && !created) {
-            try {
-                created = file.createNewFile();
-            } catch (IOException e) {
+        if (create) {
+            if (!created) {
+                try {
+                    created = file.createNewFile();
+                } catch (IOException e) {
+                    logger.warning("Could not create user file for "
+                            + playerId);
+                }
+            }
+
+            // check again if file was created
+            if (!created) {
                 logger.warning("Could not create user file for "
                         + playerId);
+                return null;
             }
-        }
-
-        if (!created && create) {
-            logger.warning("Could not create user file for "
-                    + playerId);
-            return null;
+        } else {
+            if (!created) {
+                return null;
+            }
         }
 
         return file;
