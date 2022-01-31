@@ -2,7 +2,15 @@ storage-path: "/home/pixeldev/05_Survival_Pk/terrain-housing/"
 
 messages:
     user:
+        target-not-found: "&fEse jugador no ha sido encontrado, es posible que no haya jugado antes"
+        not-found: "&fOcurrió un error al obtener tu información, intenta de nuevo"
+        not-claimed: "&fNo hay información sobre tu casa, intenta de nuevo"
+        terrain-not-loaded: "&fEl terreno no se ha cargado, intenta de nuevo"
         already-claimed-terrain: "&fYa tienes reclamado un terreno, no puedes reclamar otro"
+        authorize-success: "&fHas añadido como autorizado a &a%target%"
+        already-authorized: "&f&a%target% &fya ha sido autorizado"
+        disavow-success: "&fHas quitado como autorizado a &a%target%"
+        not-authorized: "&f&a%target% &fno está autorizado aún"
         no-claim-permission:
             - ""
             - " &r&lTienda Oficial de Lumina"

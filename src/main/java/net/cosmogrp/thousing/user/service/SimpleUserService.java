@@ -10,12 +10,13 @@ import net.cosmogrp.thousing.terrain.repo.TerrainRepository;
 import net.cosmogrp.thousing.terrain.service.TerrainService;
 import net.cosmogrp.thousing.user.User;
 import net.cosmogrp.thousing.user.repo.UserRepository;
-import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class SimpleUserService implements UserService {
 
@@ -35,6 +36,108 @@ public class SimpleUserService implements UserService {
         }
 
         tryToClaim(player, terrain);
+    }
+
+    @Override
+    public void authorizePlayer(
+            Player sender,
+            OfflinePlayer target
+    ) {
+        if (!target.hasPlayedBefore()) {
+            messageHandler.sendMessage(
+                    sender,
+                    "user.target-not-found"
+            );
+            return;
+        }
+
+        getAndExecute(sender, user -> getClaimedTerrain(sender, user, terrain -> {
+            Terrain realTerrain = terrainRepository.getTerrain(terrain.getTerrainId());
+
+            if (terrain.authorizePlayer(target)) {
+                regionHandler.authorizePlayer(realTerrain, target.getUniqueId());
+                messageHandler.sendMessage(
+                        sender,
+                        "user.authorize-success",
+                        "%target%", target.getName()
+                );
+            } else {
+                messageHandler.sendMessage(
+                        sender,
+                        "user.already-authorized",
+                        "%target%", target.getName()
+                );
+            }
+        }));
+    }
+
+    @Override
+    public void disavowPlayer(
+            Player sender,
+            OfflinePlayer target
+    ) {
+        if (!target.hasPlayedBefore()) {
+            messageHandler.sendMessage(
+                    sender,
+                    "user.target-not-found"
+            );
+            return;
+        }
+
+        getAndExecute(sender, user -> getClaimedTerrain(sender, user, terrain -> {
+            Terrain realTerrain = terrainRepository.getTerrain(terrain.getTerrainId());
+
+            if (terrain.disavowPlayer(target)) {
+                regionHandler.disavowPlayer(realTerrain, target.getUniqueId());
+                messageHandler.sendMessage(
+                        sender,
+                        "user.disavow-success",
+                        "%target%", target.getName()
+                );
+            } else {
+                messageHandler.sendMessage(
+                        sender,
+                        "user.not-authorized",
+                        "%target%", target.getName()
+                );
+            }
+        }));
+    }
+
+    private void getClaimedTerrain(
+            Player player, User user,
+            Consumer<ClaimedTerrain> action
+    ) {
+        ClaimedTerrain terrain = user.getClaimedTerrain();
+
+        if (terrain != null) {
+            if (!terrain.isLoaded()) {
+                messageHandler.sendMessage(
+                        player,
+                        "user.terrain-not-loaded"
+                );
+            } else {
+                action.accept(terrain);
+            }
+        } else {
+            messageHandler.sendMessage(
+                    player,
+                    "user.not-claimed"
+            );
+        }
+    }
+
+    private void getAndExecute(Player player, Consumer<User> action) {
+        User user = userRepository.getUser(player);
+
+        if (user != null) {
+            action.accept(user);
+        } else {
+            messageHandler.sendMessage(
+                    player,
+                    "user.not-found"
+            );
+        }
     }
 
     @Override

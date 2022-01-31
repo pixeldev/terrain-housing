@@ -2,6 +2,7 @@ package net.cosmogrp.thousing.terrain;
 
 import net.cosmogrp.thousing.codec.Codec;
 import net.cosmogrp.thousing.util.DataStreams;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.io.DataInputStream;
@@ -49,16 +50,12 @@ public class ClaimedTerrain implements Codec {
         return authorizedPlayers;
     }
 
-    public boolean authorizePlayer(Player player) {
+    public boolean authorizePlayer(OfflinePlayer player) {
         return authorizedPlayers.add(player.getUniqueId());
     }
 
-    public boolean disavowPlayer(Player player) {
+    public boolean disavowPlayer(OfflinePlayer player) {
         return authorizedPlayers.remove(player.getUniqueId());
-    }
-
-    public boolean isAuthorized(Player player) {
-        return authorizedPlayers.contains(player.getUniqueId());
     }
 
     public static ClaimedTerrain from(String terrainId, Player player) {

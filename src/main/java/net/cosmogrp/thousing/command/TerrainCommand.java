@@ -5,6 +5,8 @@ import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.cosmogrp.thousing.terrain.Terrain;
 import net.cosmogrp.thousing.terrain.service.TerrainService;
+import net.cosmogrp.thousing.user.service.UserService;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
@@ -13,10 +15,21 @@ import javax.inject.Inject;
 public class TerrainCommand implements CommandClass {
 
     @Inject private TerrainService terrainService;
+    @Inject private UserService userService;
 
     @Command(names = "create", permission = "terrain.create")
     public void runCreate(@Sender Player sender, String id) {
         terrainService.createTerrain(sender, id);
+    }
+
+    @Command(names = "authorize")
+    public void runAuthorize(@Sender Player sender, OfflinePlayer target) {
+        userService.authorizePlayer(sender, target);
+    }
+
+    @Command(names = "deauthorize")
+    public void runDisavow(@Sender Player sender, OfflinePlayer target) {
+        userService.disavowPlayer(sender, target);
     }
 
     @Command(names = "toggle", permission = "terrain.toggle")
