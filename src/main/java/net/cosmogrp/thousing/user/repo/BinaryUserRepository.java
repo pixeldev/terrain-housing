@@ -1,6 +1,7 @@
 package net.cosmogrp.thousing.user.repo;
 
 import net.cosmogrp.thousing.user.User;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -27,9 +28,14 @@ public class BinaryUserRepository implements UserRepository {
     private final Map<UUID, User> users;
     private final File usersFolder;
 
-    public @Inject BinaryUserRepository(Plugin plugin) throws IOException {
+    public @Inject BinaryUserRepository(FileConfiguration configuration)
+            throws IOException {
         this.users = new HashMap<>();
-        this.usersFolder = new File(plugin.getDataFolder(), "users");
+
+        this.usersFolder = new File(
+                configuration.getString("storage-path"),
+                "users"
+        );
 
         if (!usersFolder.exists()) {
             if (!usersFolder.mkdirs()) {

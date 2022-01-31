@@ -1,5 +1,4 @@
-schematic:
-    path: "/home/pixeldev/05_Survival_Pk/schematics"
+storage-path: "/home/pixeldev/05_Survival_Pk/terrain-housing/"
 
 messages:
     user:

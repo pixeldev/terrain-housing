@@ -32,13 +32,10 @@ public class WorldEditSchematicHandler implements SchematicHandler {
     private final File schematicFolder;
 
     public @Inject WorldEditSchematicHandler(FileConfiguration configuration) {
-        String schematicPath = configuration.getString("schematic.path");
-
-        if (schematicPath == null) {
-            throw new IllegalArgumentException("schematic.path is not set in config.yml");
-        }
-
-        this.schematicFolder = new File(schematicPath);
+        this.schematicFolder = new File(
+                configuration.getString("storage-path"),
+                "schematics"
+        );
 
         if (!this.schematicFolder.exists()) {
             if (!this.schematicFolder.mkdirs()) {
