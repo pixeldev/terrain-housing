@@ -8,6 +8,7 @@ messages:
     terrain:
         disabled: "&fEl terreno está deshabilitado"
         created: "&fSe ha creado el terreno &a%id% &fcorrectamente"
+        already-exists: "&fEl terreno &a%id% &fya existe"
         deleted: "&fEl terreno &a%id% &fTerreno eliminado correctamente"
 
         teleported: "&fHas sido llevado al terreno &a%id%"
