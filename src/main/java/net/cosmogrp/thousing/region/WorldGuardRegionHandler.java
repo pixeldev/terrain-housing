@@ -5,6 +5,8 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -14,6 +16,8 @@ import net.cosmogrp.thousing.terrain.Terrain;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -33,11 +37,18 @@ public class WorldGuardRegionHandler implements RegionHandler {
                 return;
             }
 
-            regionManager.addRegion(new ProtectedCuboidRegion(
+            ProtectedRegion protectedRegion = new ProtectedCuboidRegion(
                     terrain.getRegionId(),
                     cuboidRegion.getMinimumPoint(),
                     cuboidRegion.getMaximumPoint()
-            ));
+            );
+
+            Map<Flag<?>, Object> flags = new HashMap<>();
+            flags.put(Flags.WATER_FLOW, false);
+            flags.put(Flags.LAVA_FLOW, false);
+
+            protectedRegion.setFlags(flags);
+            regionManager.addRegion(protectedRegion);
         }
     }
 
