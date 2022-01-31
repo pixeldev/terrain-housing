@@ -22,12 +22,12 @@ public class TerrainCommand implements CommandClass {
         terrainService.createTerrain(sender, id);
     }
 
-    @Command(names = "authorize")
+    @Command(names = "add")
     public void runAuthorize(@Sender Player sender, OfflinePlayer target) {
         userService.authorizePlayer(sender, target);
     }
 
-    @Command(names = "deauthorize")
+    @Command(names = "remove")
     public void runDisavow(@Sender Player sender, OfflinePlayer target) {
         userService.disavowPlayer(sender, target);
     }
