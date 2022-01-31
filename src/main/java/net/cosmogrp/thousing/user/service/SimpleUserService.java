@@ -2,6 +2,7 @@ package net.cosmogrp.thousing.user.service;
 
 import net.cosmogrp.thousing.cuboid.Cuboid;
 import net.cosmogrp.thousing.message.MessageHandler;
+import net.cosmogrp.thousing.region.RegionHandler;
 import net.cosmogrp.thousing.schematic.SchematicHandler;
 import net.cosmogrp.thousing.terrain.ClaimedTerrain;
 import net.cosmogrp.thousing.terrain.Terrain;
@@ -19,6 +20,7 @@ public class SimpleUserService implements UserService {
     @Inject private TerrainRepository terrainRepository;
     @Inject private SchematicHandler schematicHandler;
     @Inject private UserRepository userRepository;
+    @Inject private RegionHandler regionHandler;
     @Inject private MessageHandler messageHandler;
 
     @Override
@@ -35,7 +37,7 @@ public class SimpleUserService implements UserService {
     @Override
     public void tryToClaim(Player player, Terrain terrain) {
         if (!player.hasPermission("thousing.claim")) {
-            messageHandler.sendMessage(player, "user.no-claim-permission");
+            messageHandler.sendMessages(player, "user.no-claim-permission");
             return;
         }
 
@@ -71,6 +73,7 @@ public class SimpleUserService implements UserService {
                 return;
             }
 
+            claimedTerrain.setTerrainId(terrain.getId());
             schematicHandler.pasteSchematic(
                     user.getPlayerId().toString(),
                     terrain.getCuboid()
@@ -80,7 +83,7 @@ public class SimpleUserService implements UserService {
             user.setClaimedTerrain(claimedTerrain);
         }
 
-        claimedTerrain.setLoaded(true);
+        regionHandler.authorizePlayers(terrain, claimedTerrain);
         terrain.setClaimedBy(player.getUniqueId());
         messageHandler.sendMessage(player, "terrain.claimed");
     }
@@ -109,6 +112,7 @@ public class SimpleUserService implements UserService {
 
             if (terrain != null) {
                 terrain.setClaimedBy(null);
+                regionHandler.disavowPlayers(terrain, claimedTerrain);
                 Cuboid cuboid = terrain.getCuboid();
 
                 schematicHandler.saveSchematic(
