@@ -45,7 +45,7 @@ public class SimpleUserService implements UserService {
         }
 
         if (!terrain.isEnabled()) {
-            messageHandler.sendMessage(player, "terrain.disabled");
+            messageHandler.sendMessage(player, "terrain.not-enabled");
             return;
         }
 

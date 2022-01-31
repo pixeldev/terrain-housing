@@ -19,7 +19,7 @@ public interface TerrainService {
 
     void moveOrigin(Player player, Terrain terrain);
 
-    void deleteTerrain(Player player, Terrain terrain);
+    void toggleTerrain(Player player, Terrain terrain);
 
     void teleportToTerrain(Player player, Terrain terrain);
 

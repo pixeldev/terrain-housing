@@ -56,7 +56,7 @@ public class SimpleTerrainService implements TerrainService {
         Sign sign = terrain.getSignBlock();
         sign.setEditable(true);
 
-        List<String> lines =messageHandler.makeMessages(
+        List<String> lines = messageHandler.makeMessages(
                 "terrain.claimed-sign"
         );
 
@@ -81,7 +81,7 @@ public class SimpleTerrainService implements TerrainService {
         Sign sign = terrain.getSignBlock();
         sign.setEditable(true);
 
-        List<String> lines =messageHandler.makeMessages(
+        List<String> lines = messageHandler.makeMessages(
                 "terrain.unclaimed-sign"
         );
 
@@ -139,10 +139,12 @@ public class SimpleTerrainService implements TerrainService {
     }
 
     @Override
-    public void deleteTerrain(Player player, Terrain terrain) {
-        terrainRepository.removeTerrain(terrain);
+    public void toggleTerrain(Player player, Terrain terrain) {
+        boolean newState = !terrain.isEnabled();
+
+        terrain.setEnabled(newState);
         messageHandler.sendMessage(
-                player, "terrain.deleted",
+                player, "terrain." + (newState ? "enabled" : "disabled"),
                 "%id%", terrain.getId()
         );
     }

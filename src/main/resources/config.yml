@@ -12,10 +12,11 @@ messages:
             - "&b&ntienda.lumina.gg"
             - ""
     terrain:
-        disabled: "&fEl terreno está deshabilitado"
+        not-enabled: "&fEl terreno está deshabilitado"
         created: "&fSe ha creado el terreno &a%id% &fcorrectamente"
         already-exists: "&fEl terreno &a%id% &fya existe"
-        deleted: "&fEl terreno &a%id% &fTerreno eliminado correctamente"
+        enabled: "&fEl terreno &a%id% &fha sido habilitado correctamente"
+        disabled: "&fEl terreno &a%id% ha sido deshabilitado correctamente"
 
         teleported: "&fHas sido llevado al terreno &a%id%"
         moved-origin: "&fSe ha movido la posición de origen del terreno &a%id% &fcorrectamente"

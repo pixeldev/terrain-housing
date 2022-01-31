@@ -19,6 +19,11 @@ public class TerrainCommand implements CommandClass {
         terrainService.createTerrain(sender, id);
     }
 
+    @Command(names = "toggle", permission = "terrain.toggle")
+    public void runDisable(@Sender Player sender, Terrain terrain) {
+        terrainService.toggleTerrain(sender, terrain);
+    }
+
     @Command(names = "default-schematic", permission = "terrain.default-schematic")
     public void runSetDefaultSchematic(@Sender Player sender) {
         terrainService.createDefaultSchematic(sender);
@@ -51,7 +56,7 @@ public class TerrainCommand implements CommandClass {
 
     @Command(names = "delete", permission = "terrain.delete")
     public void runDelete(@Sender Player sender, Terrain terrain) {
-        terrainService.deleteTerrain(sender, terrain);
+        terrainService.toggleTerrain(sender, terrain);
     }
 
 }
