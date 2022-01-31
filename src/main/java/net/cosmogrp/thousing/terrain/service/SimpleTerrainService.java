@@ -95,7 +95,7 @@ public class SimpleTerrainService implements TerrainService {
         Skull skull = terrain.getSkullBlock();
 
         skull.setOwningPlayer(Bukkit.getOfflinePlayer(
-                UUID.fromString("8667ba71-b85a-4004-af54-457a9734eed7")
+                UUID.fromString("6bc9686c-8f52-466c-8ed4-786e14d880e7")
         ));
 
         skull.update();
