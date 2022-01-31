@@ -1,11 +1,11 @@
 package net.cosmogrp.thousing.schematic;
 
-import net.cosmogrp.thousing.terrain.ClaimedTerrain;
+import net.cosmogrp.thousing.cuboid.Cuboid;
 
 public interface SchematicHandler {
 
-    void pasteSchematic(ClaimedTerrain terrain);
+    void pasteSchematic(String schematic, Cuboid cuboid);
 
-    void saveSchematic(ClaimedTerrain terrain);
+    void saveSchematic(String schematic, Cuboid cuboid);
 
 }

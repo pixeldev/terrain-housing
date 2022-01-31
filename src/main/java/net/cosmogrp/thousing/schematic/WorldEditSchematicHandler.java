@@ -16,9 +16,6 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import net.cosmogrp.thousing.cuboid.Cuboid;
-import net.cosmogrp.thousing.terrain.ClaimedTerrain;
-import net.cosmogrp.thousing.terrain.Terrain;
-import net.cosmogrp.thousing.terrain.repo.TerrainRepository;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,9 +28,7 @@ import java.util.logging.Logger;
 
 public class WorldEditSchematicHandler implements SchematicHandler {
 
-    @Inject private TerrainRepository repository;
     @Inject private Logger pluginLogger;
-
     private final File schematicFolder;
 
     public @Inject WorldEditSchematicHandler(FileConfiguration configuration) {
@@ -53,45 +48,25 @@ public class WorldEditSchematicHandler implements SchematicHandler {
     }
 
     @Override
-    public void pasteSchematic(ClaimedTerrain terrain) {
-        Terrain realTerrain =
-                repository.getTerrain(terrain.getTerrainId());
-
-        if (realTerrain == null) {
-            pluginLogger.severe("Could not find terrain with id "
-                    + terrain.getTerrainId());
-            return;
-        }
-
-        Cuboid cuboid = realTerrain.getCuboid();
-
-        if (cuboid == null) {
-            pluginLogger.severe("Could not find cuboid for terrain with id "
-                    + terrain.getTerrainId());
-            return;
-        }
-
-        File schematicFile = createSchematicFile(terrain, false);
-
-        if (schematicFile == null) {
-            pluginLogger.severe("Could not create schematic file for terrain with id "
-                    + terrain.getTerrainId());
-            return;
-        }
-
+    public void pasteSchematic(String schematic, Cuboid cuboid) {
         Region region = cuboid.toWorldEditCuboid();
-        ClipboardFormat format = ClipboardFormats.findByFile(schematicFile);
+        File file = createSchematicFile(schematic, false);
+
+        if (file == null) {
+            return;
+        }
+
+        ClipboardFormat format = ClipboardFormats.findByFile(file);
 
         if (format == null) {
-            pluginLogger.severe("Could not find schematic format for terrain with id "
-                    + terrain.getTerrainId());
+            // this should never happen
             return;
         }
 
         try (EditSession editSession = WorldEdit.getInstance()
                 .newEditSession(region.getWorld())
         ) {
-            try (ClipboardReader reader = format.getReader(new FileInputStream(schematicFile))) {
+            try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
                 Clipboard clipboard = reader.read();
                 Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
@@ -102,38 +77,23 @@ public class WorldEditSchematicHandler implements SchematicHandler {
 
                 Operations.complete(operation);
             } catch (IOException | WorldEditException e) {
-                pluginLogger.severe("Could not paste schematic for terrain with id "
-                        + terrain.getTerrainId());
-                e.printStackTrace();
+                pluginLogger.severe(
+                        "Couldn't paste schematic file " +
+                                file.getName()
+                );
             }
         }
     }
 
     @Override
-    public void saveSchematic(ClaimedTerrain terrain) {
-        Terrain realTerrain =
-                repository.getTerrain(terrain.getTerrainId());
-
-        if (realTerrain == null) {
-            pluginLogger.severe("Could not find terrain with id "
-                    + terrain.getTerrainId());
-            return;
-        }
-
-        Cuboid cuboid = realTerrain.getCuboid();
-
-        if (cuboid == null) {
-            return;
-        }
-
-        File file = createSchematicFile(terrain, true);
+    public void saveSchematic(String schematic, Cuboid cuboid) {
+        Region region = cuboid.toWorldEditCuboid();
+        BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
+        File file = createSchematicFile(schematic, true);
 
         if (file == null) {
             return;
         }
-
-        Region region = cuboid.toWorldEditCuboid();
-        BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
 
         try (EditSession editSession = WorldEdit.getInstance()
                 .newEditSession(region.getWorld())
@@ -148,9 +108,9 @@ public class WorldEditSchematicHandler implements SchematicHandler {
             try {
                 Operations.complete(copy);
             } catch (WorldEditException e) {
-                pluginLogger.severe("Could not copy region " +
-                        terrain.getTerrainId() +
-                        " to clipboard");
+                pluginLogger.severe(
+                        "Couldn't copy region in file "
+                                + file.getName());
             }
 
             try (ClipboardWriter writer = BuiltInClipboardFormat
@@ -159,38 +119,20 @@ public class WorldEditSchematicHandler implements SchematicHandler {
             ) {
                 writer.write(clipboard);
             } catch (IOException e) {
-                pluginLogger.severe("Could not write schematic file " +
+                pluginLogger.severe(
+                        "Could not write schematic file " +
                         file.getName());
             }
         }
     }
 
-    private Clipboard createClipboard(File file) {
-        ClipboardFormat format = ClipboardFormats.findByFile(file);
-
-        if (format == null) {
-            // I think this should never happen
-            pluginLogger.severe("Could not find schematic format for "
-                    + file.getName());
-            return null;
-        }
-
-        try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
-            return reader.read();
-        } catch (IOException e) {
-            pluginLogger.severe("Could not read schematic file "
-                    + file.getName());
-            return null;
-        }
-    }
-
     private @Nullable File createSchematicFile(
-            ClaimedTerrain terrain,
+            String schematic,
             boolean create
     ) {
         File file = new File(
                 schematicFolder,
-                terrain.getOwnerId() + ".schematic"
+                schematic + ".schematic"
         );
 
         boolean created = file.exists();
@@ -200,14 +142,13 @@ public class WorldEditSchematicHandler implements SchematicHandler {
                 created = file.createNewFile();
                 if (!created) {
                     pluginLogger.severe(
-                            "Could not create schematic file for " +
-                                    terrain.getOwnerId()
-                    );
+                            "Couldn't create schematic file for "
+                                    + schematic);
                 }
             } catch (IOException e) {
                 pluginLogger.severe(
                         "Could not create schematic file for "
-                                + terrain.getOwnerId()
+                                + schematic
                 );
             }
         }
