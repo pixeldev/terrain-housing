@@ -3,7 +3,14 @@ storage-path: "/home/pixeldev/05_Survival_Pk/terrain-housing/"
 messages:
     user:
         already-claimed-terrain: "&fYa tienes reclamado un terreno, no puedes reclamar otro"
-        no-claim-permission: "&fNo tienes permiso para reclamar terrenos"
+        no-claim-permission:
+            - ""
+            - " &r&lTienda Oficial de Lumina"
+            - ""
+            - " &7&oAdquiere este privilegio&r"
+            - ""
+            - "&b&ntienda.lumina.gg"
+            - ""
     terrain:
         disabled: "&fEl terreno está deshabilitado"
         created: "&fSe ha creado el terreno &a%id% &fcorrectamente"
@@ -14,6 +21,16 @@ messages:
         moved-origin: "&fSe ha movido la posición de origen del terreno &a%id% &fcorrectamente"
 
         claimed: "&fHas reclamado este terreno correctamente, recuerda que construir cosas obsenas te hará perder este privilegio."
+        unclaimed-sign:
+            - " "
+            - "&fHaz clic aquí"
+            - "&fpara reclamar"
+            - "&feste terreno"
+        claimed-sign:
+            - "&fTerreno ocupado"
+            - " "
+            - "%luckperms_prefix%"
+            - "%player_name%"
         already-claimed-by-other: "&fEse terreno está ocupado por otro jugador"
         already-claimed-by-you: "&fEste terreno ya está ocupado por ti"
 

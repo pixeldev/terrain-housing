@@ -7,8 +7,10 @@ import net.cosmogrp.thousing.schematic.SchematicHandler;
 import net.cosmogrp.thousing.terrain.ClaimedTerrain;
 import net.cosmogrp.thousing.terrain.Terrain;
 import net.cosmogrp.thousing.terrain.repo.TerrainRepository;
+import net.cosmogrp.thousing.terrain.service.TerrainService;
 import net.cosmogrp.thousing.user.User;
 import net.cosmogrp.thousing.user.repo.UserRepository;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class SimpleUserService implements UserService {
 
     @Inject private TerrainRepository terrainRepository;
+    @Inject private TerrainService terrainService;
     @Inject private SchematicHandler schematicHandler;
     @Inject private UserRepository userRepository;
     @Inject private RegionHandler regionHandler;
@@ -84,7 +87,7 @@ public class SimpleUserService implements UserService {
         }
 
         regionHandler.authorizePlayers(terrain, claimedTerrain);
-        terrain.setClaimedBy(player.getUniqueId());
+        terrainService.claim(player, terrain);
         messageHandler.sendMessage(player, "terrain.claimed");
     }
 
@@ -111,7 +114,7 @@ public class SimpleUserService implements UserService {
             );
 
             if (terrain != null) {
-                terrain.setClaimedBy(null);
+                terrainService.removeClaimed(terrain);
                 regionHandler.disavowPlayers(terrain, claimedTerrain);
                 Cuboid cuboid = terrain.getCuboid();
 

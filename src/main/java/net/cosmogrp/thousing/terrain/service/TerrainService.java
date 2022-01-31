@@ -9,6 +9,10 @@ public interface TerrainService {
 
     void createTerrain(Player player, String id);
 
+    void claim(Player player, Terrain terrain);
+
+    void removeClaimed(Terrain terrain);
+
     void createDefaultSchematic(Player player);
 
     void setupCuboid(Player player, Terrain terrain);

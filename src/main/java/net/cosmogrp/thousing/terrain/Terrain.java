@@ -7,6 +7,8 @@ import net.cosmogrp.thousing.cuboid.Cuboid;
 import net.cosmogrp.thousing.util.DataStreams;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -84,6 +86,18 @@ public class Terrain implements Codec {
 
     public BlockAxis getSkullLocation() {
         return skullLocation;
+    }
+
+    public Skull getSkullBlock() {
+        return (Skull) getWorld()
+                .getBlockAt(skullLocation.toLocation())
+                .getState();
+    }
+
+    public Sign getSignBlock() {
+        return (Sign) getWorld()
+                .getBlockAt(signLocation.toLocation())
+                .getState();
     }
 
     public BlockAxis getSignLocation() {

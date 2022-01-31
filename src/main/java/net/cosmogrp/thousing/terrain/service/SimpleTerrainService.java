@@ -1,5 +1,6 @@
 package net.cosmogrp.thousing.terrain.service;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.cosmogrp.thousing.cuboid.Cuboid;
 import net.cosmogrp.thousing.cuboid.WorldEditSelection;
 import net.cosmogrp.thousing.message.MessageHandler;
@@ -7,13 +8,17 @@ import net.cosmogrp.thousing.region.RegionHandler;
 import net.cosmogrp.thousing.schematic.SchematicHandler;
 import net.cosmogrp.thousing.terrain.Terrain;
 import net.cosmogrp.thousing.terrain.repo.TerrainRepository;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.UUID;
 
 public class SimpleTerrainService implements TerrainService {
 
@@ -42,6 +47,58 @@ public class SimpleTerrainService implements TerrainService {
         );
 
         sendMissingProperties(player, terrain);
+    }
+
+    @Override
+    public void claim(Player player, Terrain terrain) {
+        terrain.setClaimedBy(player.getUniqueId());
+
+        Sign sign = terrain.getSignBlock();
+        sign.setEditable(true);
+
+        List<String> lines =messageHandler.makeMessages(
+                "terrain.claimed-sign"
+        );
+
+        for (int i = 0; i < lines.size(); i++) {
+            sign.setLine(i, PlaceholderAPI.setPlaceholders(
+                    player, lines.get(i)
+            ));
+        }
+
+        sign.update();
+        sign.setEditable(false);
+
+        Skull skull = terrain.getSkullBlock();
+        skull.setOwningPlayer(player);
+        skull.update();
+    }
+
+    @Override
+    public void removeClaimed(Terrain terrain) {
+        terrain.setClaimedBy(null);
+
+        Sign sign = terrain.getSignBlock();
+        sign.setEditable(true);
+
+        List<String> lines =messageHandler.makeMessages(
+                "terrain.unclaimed-sign"
+        );
+
+        for (int i = 0; i < lines.size(); i++) {
+            sign.setLine(i, lines.get(i));
+        }
+
+        sign.update();
+        sign.setEditable(false);
+
+        Skull skull = terrain.getSkullBlock();
+
+        skull.setOwningPlayer(Bukkit.getOfflinePlayer(
+                UUID.fromString("8667ba71-b85a-4004-af54-457a9734eed7")
+        ));
+
+        skull.update();
     }
 
     @Override
