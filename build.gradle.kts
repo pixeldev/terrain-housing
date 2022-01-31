@@ -12,7 +12,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.jetbrains:annotations:22.0.0")
     implementation("me.fixeddev:commandflow-brigadier:0.5.0-SNAPSHOT")
     implementation("me.yushust.inject:core:0.4.5-SNAPSHOT")
@@ -24,7 +23,6 @@ dependencies {
 tasks {
     shadowJar {
         val path = "net.cosmogrp.thousing.libs"
-        relocate("com.zaxxer", "$path.zaxxer")
         relocate("me.fixeddev", "$path.fixeddev")
         relocate("me.yushust", "$path.yushust")
         relocate("me.lucko", "$path.lucko")
