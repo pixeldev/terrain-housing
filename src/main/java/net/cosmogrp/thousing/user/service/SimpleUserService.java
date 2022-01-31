@@ -43,6 +43,14 @@ public class SimpleUserService implements UserService {
             Player sender,
             OfflinePlayer target
     ) {
+        if (sender.getUniqueId().equals(target.getUniqueId())) {
+            messageHandler.sendMessage(
+                    sender,
+                    "user.self"
+            );
+            return;
+        }
+
         if (!target.hasPlayedBefore()) {
             messageHandler.sendMessage(
                     sender,
@@ -76,6 +84,14 @@ public class SimpleUserService implements UserService {
             Player sender,
             OfflinePlayer target
     ) {
+        if (sender.getUniqueId().equals(target.getUniqueId())) {
+            messageHandler.sendMessage(
+                    sender,
+                    "user.self"
+            );
+            return;
+        }
+
         if (!target.hasPlayedBefore()) {
             messageHandler.sendMessage(
                     sender,

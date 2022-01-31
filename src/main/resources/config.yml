@@ -2,6 +2,7 @@ storage-path: "/home/pixeldev/05_Survival_Pk/terrain-housing/"
 
 messages:
     user:
+        self: "&fNo puedes hacer esto con ti mismo"
         target-not-found: "&fEse jugador no ha sido encontrado, es posible que no haya jugado antes"
         not-found: "&fOcurrió un error al obtener tu información, intenta de nuevo"
         not-claimed: "&fNo hay información sobre tu casa, intenta de nuevo"
