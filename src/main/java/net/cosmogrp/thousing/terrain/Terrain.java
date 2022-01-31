@@ -41,6 +41,10 @@ public class Terrain implements Codec {
         return id;
     }
 
+    public String getRegionId() {
+        return id + "-terrain-region";
+    }
+
     public @Nullable UUID getClaimedBy() {
         return claimedBy;
     }
