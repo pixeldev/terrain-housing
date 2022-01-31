@@ -74,10 +74,4 @@ public class TerrainCommand implements CommandClass {
     public void runSetSkull(@Sender Player sender, Terrain terrain) {
         terrainService.setSkullLocation(sender, terrain);
     }
-
-    @Command(names = "delete", permission = "terrain.delete")
-    public void runDelete(@Sender Player sender, Terrain terrain) {
-        terrainService.toggleTerrain(sender, terrain);
-    }
-
 }
