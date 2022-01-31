@@ -1,6 +1,8 @@
 package net.cosmogrp.thousing.module;
 
 import me.yushust.inject.AbstractModule;
+import net.cosmogrp.thousing.region.RegionHandler;
+import net.cosmogrp.thousing.region.WorldGuardRegionHandler;
 import net.cosmogrp.thousing.schematic.SchematicHandler;
 import net.cosmogrp.thousing.schematic.WorldEditSchematicHandler;
 import net.cosmogrp.thousing.terrain.repo.BinaryTerrainRepository;
@@ -15,6 +17,7 @@ public class TerrainModule extends AbstractModule {
         bind(TerrainRepository.class).to(BinaryTerrainRepository.class).singleton();
         bind(TerrainService.class).to(SimpleTerrainService.class).singleton();
         bind(SchematicHandler.class).to(WorldEditSchematicHandler.class).singleton();
+        bind(RegionHandler.class).to(WorldGuardRegionHandler.class).singleton();
     }
 
 }
