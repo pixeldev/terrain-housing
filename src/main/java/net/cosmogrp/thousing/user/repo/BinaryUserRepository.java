@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 public class BinaryUserRepository implements UserRepository {
@@ -67,7 +68,9 @@ public class BinaryUserRepository implements UserRepository {
                 return;
             }
 
-            try (DataInputStream input = new DataInputStream(new FileInputStream(file))) {
+            try (DataInputStream input = new DataInputStream(
+                    new FileInputStream(file)
+            )) {
                 User user = User.from(input);
                 users.put(playerId, user);
             } catch (IOException e) {
@@ -85,21 +88,32 @@ public class BinaryUserRepository implements UserRepository {
             return null;
         }
 
-        executor.execute(() -> {
-            File file = makeUserFile(playerId, true);
-
-            if (file == null) {
-                return;
-            }
-
-            try (DataOutputStream input = new DataOutputStream(new FileOutputStream(file))) {
-                user.write(input);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
+        executor.execute(() -> saveSync(user));
         return user;
+    }
+
+    @Override
+    public void saveAllUsers(Consumer<User> action) {
+        for (User user : users.values()) {
+            action.accept(user);
+            saveSync(user);
+        }
+    }
+
+    private void saveSync(User user) {
+        File file = makeUserFile(user.getPlayerId(), true);
+
+        if (file == null) {
+            return;
+        }
+
+        try (DataOutputStream input = new DataOutputStream(
+                new FileOutputStream(file)
+        )) {
+            user.write(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private @Nullable File makeUserFile(UUID playerId, boolean create) {

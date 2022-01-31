@@ -4,6 +4,8 @@ import net.cosmogrp.thousing.user.User;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 public interface UserRepository {
 
     User getUser(Player player);
@@ -13,5 +15,7 @@ public interface UserRepository {
     void loadUser(Player player);
 
     @Nullable User saveUser(Player player);
+
+    void saveAllUsers(Consumer<User> action);
 
 }

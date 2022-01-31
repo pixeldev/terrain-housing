@@ -1,5 +1,6 @@
 package net.cosmogrp.thousing.user.service;
 
+import net.cosmogrp.thousing.cuboid.Cuboid;
 import net.cosmogrp.thousing.message.MessageHandler;
 import net.cosmogrp.thousing.schematic.SchematicHandler;
 import net.cosmogrp.thousing.terrain.ClaimedTerrain;
@@ -38,6 +39,11 @@ public class SimpleUserService implements UserService {
             return;
         }
 
+        if (!terrain.isEnabled()) {
+            messageHandler.sendMessage(player, "terrain.disabled");
+            return;
+        }
+
         UUID claimedBy = terrain.getClaimedBy();
 
         if (claimedBy != null) {
@@ -65,7 +71,10 @@ public class SimpleUserService implements UserService {
                 return;
             }
 
-            schematicHandler.pasteSchematic(claimedTerrain);
+            schematicHandler.pasteSchematic(
+                    user.getPlayerId().toString(),
+                    terrain.getCuboid()
+            );
         } else {
             claimedTerrain = ClaimedTerrain.from(terrain.getId(), player);
             user.setClaimedTerrain(claimedTerrain);
@@ -85,14 +94,37 @@ public class SimpleUserService implements UserService {
     public void saveUser(Player player) {
         User user = userRepository.saveUser(player);
 
-        if (user == null) {
-            return;
+        if (user != null) {
+            saveSyncUser(user);
         }
+    }
 
+    private void saveSyncUser(User user) {
         ClaimedTerrain claimedTerrain = user.getClaimedTerrain();
 
         if (claimedTerrain != null) {
-            schematicHandler.saveSchematic(claimedTerrain);
+            Terrain terrain = terrainRepository.getTerrain(
+                    claimedTerrain.getTerrainId()
+            );
+
+            if (terrain != null) {
+                terrain.setClaimedBy(null);
+                Cuboid cuboid = terrain.getCuboid();
+
+                schematicHandler.saveSchematic(
+                        user.getPlayerId().toString(),
+                        cuboid
+                );
+
+                schematicHandler.pasteSchematic(
+                        "default", cuboid
+                );
+            }
         }
+    }
+
+    @Override
+    public void saveAllUsers() {
+        userRepository.saveAllUsers(this::saveSyncUser);
     }
 }

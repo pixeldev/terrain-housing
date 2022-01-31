@@ -14,4 +14,6 @@ public interface UserService {
 
     void saveUser(Player player);
 
+    void saveAllUsers();
+
 }
