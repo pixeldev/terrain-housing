@@ -13,12 +13,10 @@ import java.util.UUID;
 
 public class ClaimedTerrain implements Codec {
 
-    private String terrainId;
-
     private UUID ownerId;
     private final Set<UUID> authorizedPlayers;
 
-    private boolean loaded;
+    private String terrainId;
 
     private ClaimedTerrain(String terrainId, UUID ownerId) {
         this.terrainId = terrainId;
@@ -35,12 +33,12 @@ public class ClaimedTerrain implements Codec {
         return terrainId;
     }
 
-    public boolean isLoaded() {
-        return loaded;
+    public void setTerrainId(String terrainId) {
+        this.terrainId = terrainId;
     }
 
-    public void setLoaded(boolean loaded) {
-        this.loaded = loaded;
+    public boolean isLoaded() {
+        return terrainId != null;
     }
 
     public UUID getOwnerId() {
@@ -75,7 +73,6 @@ public class ClaimedTerrain implements Codec {
 
     @Override
     public void write(DataOutputStream output) throws IOException {
-        DataStreams.writeString(terrainId, output);
         DataStreams.writeUuid(ownerId, output);
         output.writeInt(authorizedPlayers.size());
         for (UUID uuid : authorizedPlayers) {
@@ -85,7 +82,6 @@ public class ClaimedTerrain implements Codec {
 
     @Override
     public void read(DataInputStream input) throws IOException {
-        terrainId = DataStreams.readString(input);
         ownerId = DataStreams.readUuid(input);
         int size = input.readInt();
         for (int i = 0; i < size; i++) {
