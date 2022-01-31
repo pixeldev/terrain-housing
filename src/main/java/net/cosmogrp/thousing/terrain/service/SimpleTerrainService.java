@@ -1,10 +1,9 @@
 package net.cosmogrp.thousing.terrain.service;
 
-import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.regions.Region;
 import net.cosmogrp.thousing.cuboid.Cuboid;
+import net.cosmogrp.thousing.cuboid.WorldEditSelection;
 import net.cosmogrp.thousing.message.MessageHandler;
+import net.cosmogrp.thousing.schematic.SchematicHandler;
 import net.cosmogrp.thousing.terrain.Terrain;
 import net.cosmogrp.thousing.terrain.repo.TerrainRepository;
 import org.bukkit.Material;
@@ -19,6 +18,8 @@ public class SimpleTerrainService implements TerrainService {
 
     @Inject private MessageHandler messageHandler;
     @Inject private TerrainRepository terrainRepository;
+    @Inject private WorldEditSelection worldEditSelection;
+    @Inject private SchematicHandler schematicHandler;
 
     @Override
     public void createTerrain(Player player, String id) {
@@ -34,24 +35,28 @@ public class SimpleTerrainService implements TerrainService {
     }
 
     @Override
-    public void setupCuboid(Player player, Terrain terrain) {
-        try {
-            Region selection = WorldEditPlugin
-                    .getPlugin(WorldEditPlugin.class)
-                    .getSession(player)
-                    .getSelection();
+    public void createDefaultSchematic(Player player) {
+        Cuboid cuboid = worldEditSelection
+                .createCuboidFromSelection(player);
 
-            terrain.setCuboid(Cuboid.from(selection));
+        if (cuboid != null) {
+            schematicHandler.saveSchematic("default", cuboid);
+            messageHandler.sendMessage(player, "terrain.default-schematic-created");
+        }
+    }
+
+    @Override
+    public void setupCuboid(Player player, Terrain terrain) {
+        Cuboid cuboid = worldEditSelection
+                .createCuboidFromSelection(player);
+
+        if (cuboid != null) {
+            terrain.setCuboid(cuboid);
             messageHandler.sendMessage(
                     player, "terrain.set-cuboid",
                     "%id%", terrain.getId()
             );
-
             sendMissingProperties(player, terrain);
-        } catch (IncompleteRegionException e) {
-            messageHandler.sendMessage(
-                    player, "terrain.no-selection"
-            );
         }
     }
 

@@ -19,6 +19,11 @@ public class TerrainCommand implements CommandClass {
         terrainService.createTerrain(sender, id);
     }
 
+    @Command(names = "default-schematic", permission = "terrain.default-schematic")
+    public void runSetDefaultSchematic(@Sender Player sender) {
+        terrainService.createDefaultSchematic(sender);
+    }
+
     @Command(names = "cuboid", permission = "terrain.cuboid")
     public void runCuboid(@Sender Player sender, Terrain terrain) {
         terrainService.setupCuboid(sender, terrain);

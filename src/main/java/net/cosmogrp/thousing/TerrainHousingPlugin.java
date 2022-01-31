@@ -13,6 +13,7 @@ import net.cosmogrp.thousing.command.internal.TerrainPartFactory;
 import net.cosmogrp.thousing.module.MainModule;
 import net.cosmogrp.thousing.terrain.Terrain;
 import net.cosmogrp.thousing.terrain.repo.TerrainRepository;
+import net.cosmogrp.thousing.user.service.UserService;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +28,7 @@ public class TerrainHousingPlugin extends JavaPlugin {
     @Inject private Set<Listener> listeners;
     @Inject private TerrainPartFactory terrainPartFactory;
     @Inject private TerrainRepository terrainRepository;
+    @Inject private UserService userService;
 
     @Override
     public void onLoad() {
@@ -69,6 +71,8 @@ public class TerrainHousingPlugin extends JavaPlugin {
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Failed to save terrains", e);
         }
+
+        userService.saveAllUsers();
     }
 
 }

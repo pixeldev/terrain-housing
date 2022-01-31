@@ -6,6 +6,7 @@ messages:
         already-claimed-terrain: "&fYa tienes reclamado un terreno, no puedes reclamar otro"
         no-claim-permission: "&fNo tienes permiso para reclamar terrenos"
     terrain:
+        disabled: "&fEl terreno está deshabilitado"
         created: "&fSe ha creado el terreno &a%id% &fcorrectamente"
         deleted: "&fEl terreno &a%id% &fTerreno eliminado correctamente"
 
@@ -24,6 +25,7 @@ messages:
 
         set-cuboid: "&fSe ha establecido el cubo para el terreno &a%id%"
         no-selection: "&fDebes seleccionar un cubo para poder hacer esto"
+        default-schematic-created: "&fSe ha creado la schematic, se usará para reemplazar el terreno cuando se elimine"
 
         setup-completed: "&fSe ha completado la configuración del terreno &a%id%"
         missing-sign: "&a - &fEstablecer la localización del cartel para el terreno."

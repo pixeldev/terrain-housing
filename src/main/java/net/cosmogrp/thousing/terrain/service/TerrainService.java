@@ -9,6 +9,8 @@ public interface TerrainService {
 
     void createTerrain(Player player, String id);
 
+    void createDefaultSchematic(Player player);
+
     void setupCuboid(Player player, Terrain terrain);
 
     void moveOrigin(Player player, Terrain terrain);
