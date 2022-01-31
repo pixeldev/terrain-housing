@@ -8,6 +8,7 @@ import net.cosmogrp.thousing.terrain.service.TerrainService;
 import net.cosmogrp.thousing.user.service.UserService;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import javax.inject.Inject;
 
@@ -15,11 +16,18 @@ import javax.inject.Inject;
 public class TerrainCommand implements CommandClass {
 
     @Inject private TerrainService terrainService;
+    @Inject private Plugin plugin;
     @Inject private UserService userService;
 
     @Command(names = "create", permission = "terrain.create")
     public void runCreate(@Sender Player sender, String id) {
         terrainService.createTerrain(sender, id);
+    }
+
+    @Command(names = "reload", permission = "terrain.reload")
+    public void runReload(@Sender Player sender) {
+        plugin.reloadConfig();
+        sender.sendMessage("Config reloaded");
     }
 
     @Command(names = "add")
