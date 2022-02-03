@@ -10,9 +10,11 @@ import net.cosmogrp.thousing.terrain.repo.TerrainRepository;
 import net.cosmogrp.thousing.terrain.service.TerrainService;
 import net.cosmogrp.thousing.user.User;
 import net.cosmogrp.thousing.user.repo.UserRepository;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -21,6 +23,7 @@ import java.util.function.Consumer;
 public class SimpleUserService implements UserService {
 
     @Inject private TerrainRepository terrainRepository;
+    @Inject private Plugin plugin;
     @Inject private TerrainService terrainService;
     @Inject private SchematicHandler schematicHandler;
     @Inject private UserRepository userRepository;
@@ -233,7 +236,6 @@ public class SimpleUserService implements UserService {
             );
 
             if (terrain != null) {
-                terrainService.removeClaimed(terrain);
                 regionHandler.disavowPlayers(terrain, claimedTerrain);
                 Cuboid cuboid = terrain.getCuboid();
 
@@ -242,9 +244,12 @@ public class SimpleUserService implements UserService {
                         cuboid
                 );
 
-                schematicHandler.pasteSchematic(
-                        "default", cuboid
-                );
+                Bukkit.getScheduler().runTaskLater(
+                        plugin, () -> {
+                            schematicHandler.pasteSchematic("default", cuboid);
+                            terrainService.removeClaimed(terrain);
+                        },
+                        20L);
             }
         }
     }
