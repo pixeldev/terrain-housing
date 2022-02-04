@@ -75,12 +75,11 @@ public class TerrainHousingPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
+            userService.saveAllUsers();
             terrainRepository.saveTerrains();
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Failed to save terrains", e);
         }
-
-        userService.saveAllUsers();
     }
 
 }
