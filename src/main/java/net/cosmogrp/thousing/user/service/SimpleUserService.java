@@ -244,12 +244,8 @@ public class SimpleUserService implements UserService {
                         cuboid
                 );
 
-                Bukkit.getScheduler().runTaskLater(
-                        plugin, () -> {
-                            schematicHandler.pasteSchematic("default", cuboid);
-                            terrainService.removeClaimed(terrain);
-                        },
-                        20L);
+                schematicHandler.pasteSchematic("default", cuboid);
+                terrainService.removeClaimed(terrain);
             }
         }
     }
