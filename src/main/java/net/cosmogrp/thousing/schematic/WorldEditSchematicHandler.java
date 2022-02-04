@@ -46,10 +46,10 @@ public class WorldEditSchematicHandler implements SchematicHandler {
 
     @Override
     public void pasteSchematic(String schematic, Cuboid cuboid) {
-        Region region = cuboid.toWorldEditCuboid();
         File file = createSchematicFile(schematic, false);
 
         if (file == null) {
+            pluginLogger.warning("Cannot get schematic file for " + schematic);
             return;
         }
 
@@ -57,9 +57,11 @@ public class WorldEditSchematicHandler implements SchematicHandler {
 
         if (format == null) {
             // this should never happen
+            System.out.println("Could not find schematic format for " + file.getName());
             return;
         }
 
+        Region region = cuboid.toWorldEditCuboid();
         try (EditSession editSession = WorldEdit.getInstance()
                 .newEditSession(region.getWorld())
         ) {
@@ -84,13 +86,15 @@ public class WorldEditSchematicHandler implements SchematicHandler {
 
     @Override
     public void saveSchematic(String schematic, Cuboid cuboid) {
-        Region region = cuboid.toWorldEditCuboid();
-        BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
         File file = createSchematicFile(schematic, true);
 
         if (file == null) {
+            pluginLogger.warning("Couldn't create schematic file: " + schematic);
             return;
         }
+
+        Region region = cuboid.toWorldEditCuboid();
+        BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
 
         try (EditSession editSession = WorldEdit.getInstance()
                 .newEditSession(region.getWorld())
