@@ -64,12 +64,6 @@ public class BinaryTerrainRepository implements TerrainRepository {
     }
 
     @Override
-    public void removeTerrain(Terrain terrain) {
-        terrainsBySign.remove(terrain.getSignLocation());
-        terrainsById.remove(terrain.getId());
-    }
-
-    @Override
     public void loadTerrains() throws Exception {
         if (!makeFile(false)) {
             return;

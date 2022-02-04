@@ -18,8 +18,6 @@ public interface TerrainRepository {
 
     void addTerrain(Terrain terrain);
 
-    void removeTerrain(Terrain terrain);
-
     void loadTerrains() throws Exception;
 
     void saveTerrains() throws Exception;
