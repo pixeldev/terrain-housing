@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BinaryUserRepository implements UserRepository {
@@ -80,7 +81,7 @@ public class BinaryUserRepository implements UserRepository {
                 User user = User.from(input);
                 users.put(playerId, user);
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "Could not load user", e);
             }
         });
     }
@@ -88,7 +89,7 @@ public class BinaryUserRepository implements UserRepository {
     @Override
     public @Nullable User saveUser(Player player) {
         UUID playerId = player.getUniqueId();
-        User user = users.get(playerId);
+        User user = users.remove(playerId);
 
         if (user == null) {
             return null;
@@ -118,7 +119,7 @@ public class BinaryUserRepository implements UserRepository {
         )) {
             user.write(input);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Could not save user", e);
         }
     }
 
